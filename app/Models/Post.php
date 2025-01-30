@@ -16,6 +16,10 @@ class Post extends Model
         'content',
     ];
 
+    public function getStoredAttribute(){
+        return $this->created_at->diffForHumans();
+    }
+
     protected function image(): Attribute
     {
         return Attribute::make(

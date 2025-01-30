@@ -25,7 +25,10 @@ class PostController extends Controller
         ]);
 
         if ($validator->fails()) {
-            return response()->json($validator->errors(), 422);
+            return response()->json([
+                'error' => $validator->errors(),
+                'message' => "Data Post Gagal Diinput",
+            ], 400);
         }
 
         $image = $request->file('image');
@@ -43,6 +46,10 @@ class PostController extends Controller
     public function show($id){
         $posts = Post::find($id);
 
+        if(is_null($posts)){
+            return new PostResource(false, "Data Post Tidak Ditemukan", null);
+        }
+
         return new PostResource(true, "Detail Data Post", $posts);
     }
 
@@ -53,7 +60,10 @@ class PostController extends Controller
         ]);
 
         if ($validator->fails()) {
-            return response()->json($validator->errors(), 422);
+            return response()->json([
+                'error' => $validator->errors(),
+                'message' => "Data Put Gagal Diinput",
+            ], 400);
         }
 
         $post = Post::find($id);
